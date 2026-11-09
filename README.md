@@ -162,8 +162,8 @@ Alternatively, publish only the standalone build using the custom workflow:
 3. Open **Actions → Deploy web to GitHub Pages → Run workflow**, selecting `main`.
 4. After the workflow succeeds, open the deployment URL shown in its summary.
 
-The Pages workflow is intentionally manual; regular CI builds both versions on
-every push and pull request. Pages availability depends on your repository
+The Pages workflow deploys web changes on `main` automatically and also supports
+manual deployment. Regular CI builds both versions on every push and pull request. Pages availability depends on your repository
 visibility and GitHub plan. Follow [GitHub's custom Pages workflow guide](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages)
 for the repository setting. Other static hosts can serve `web/dist/` directly.
 
@@ -357,8 +357,8 @@ GitHub requires a signed-in account with repository access to download workflow
 artifacts; see [GitHub's artifact download instructions](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/download-workflow-artifacts).
 CI does not automatically create a GitHub Release or publish to a package registry.
 
-[`.github/workflows/pages.yml`](.github/workflows/pages.yml) is a separate,
-manual deployment for the web build on `main`. Build CI has read-only repository
+[`.github/workflows/pages.yml`](.github/workflows/pages.yml) is a separate
+automatic/manual deployment for the web build on `main`. Build CI has read-only repository
 permissions. Pages deployment grants only its deploy job the Pages/OIDC
 permissions required by GitHub.
 

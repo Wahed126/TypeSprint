@@ -32,5 +32,5 @@ if __name__ == '__main__':
     web = Path(__file__).resolve().parent.parent
     directory = web.parent if args.branch else web / 'dist'
     Handler.allowed = {'/', '/index.html'} | ({'/web/'} | {'/web/' + name for name in PUBLIC_FILES}
-                                           if args.branch else {'/' + name for name in PUBLIC_FILES})
+                                           if args.branch else {'/web/', '/web/index.html'} | {'/' + name for name in PUBLIC_FILES})
     ThreadingHTTPServer(('127.0.0.1', args.port), partial(Handler, directory=str(directory))).serve_forever()

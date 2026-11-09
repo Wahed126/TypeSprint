@@ -1,5 +1,5 @@
 const PREFIX = 'typesprint-' + new URL(self.registration.scope).pathname + '-';
-const CACHE = PREFIX + 'e157726ad5a85df3';
+const CACHE = PREFIX + '7f3f199243fcebb9';
 const ASSETS = ['./', './index.html', './styles.css', './app.js', './engine.js', './storage.js', './data/exercises.json', './icon.svg', './manifest.webmanifest'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))); });
 self.addEventListener('activate', event => {
@@ -12,6 +12,6 @@ self.addEventListener('fetch', event => {
     const cached = await cache.match(event.request, { ignoreSearch: true });
     if (cached) return cached;
     try { return await fetch(event.request); }
-    catch (error) { if (event.request.mode === 'navigate') return cache.match('./index.html'); throw error; }
+    catch (error) { if (event.request.mode === 'navigate') return Response.redirect(self.registration.scope, 302); throw error; }
   }));
 });

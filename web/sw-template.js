@@ -12,6 +12,6 @@ self.addEventListener('fetch', event => {
     const cached = await cache.match(event.request, { ignoreSearch: true });
     if (cached) return cached;
     try { return await fetch(event.request); }
-    catch (error) { if (event.request.mode === 'navigate') return cache.match('./index.html'); throw error; }
+    catch (error) { if (event.request.mode === 'navigate') return Response.redirect(self.registration.scope, 302); throw error; }
   }));
 });

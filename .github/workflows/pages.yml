@@ -1,7 +1,14 @@
 name: Deploy web to GitHub Pages
 
-# Enable Settings > Pages > Source: GitHub Actions, then run this workflow.
+# Publish game changes automatically; manual deployment remains available.
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'web/**'
+      - 'index.html'
+      - '.nojekyll'
+      - '.github/workflows/pages.yml'
   workflow_dispatch:
 
 permissions:

@@ -172,3 +172,10 @@ Local checks for this change:
 
 These checks use temporary browser storage and local servers. Hosted deployment
 and live-site checks are reported separately at handoff.
+
+
+The public `/TypeSprint/web/` game was also checked in Chrome: native typing,
+a complete real-time 15-second Sprint, 100% accuracy for matching input,
+results focus, Enter on Play again, and History after reload all passed without
+uncaught browser errors. Pages publishing now also runs automatically when web
+files change on `main`, so updated playable builds do not require manual reruns.

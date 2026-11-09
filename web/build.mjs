@@ -19,4 +19,10 @@ const worker = workerTemplate.replace('__CACHE_VERSION__', version);
 await writeFile(path.join(root, 'sw.js'), worker);
 await writeFile(path.join(dist, 'sw.js'), worker);
 await writeFile(path.join(dist, '.nojekyll'), '');
-console.log(`Built web/dist (${files.length + 2} files; offline cache ${version})`);
+// Keep links to the branch-hosted /web/ address valid in artifact deployments.
+await mkdir(path.join(dist, 'web'), { recursive: true });
+await writeFile(path.join(dist, 'web/index.html'), `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta http-equiv="refresh" content="0; url=../">
+<title>Play TypeSprint</title><script>window.location.replace(new URL('../', window.location.href).href);</script>
+</head><body><a href="../">Play TypeSprint</a></body></html>`);
+console.log(`Built web/dist (${files.length + 3} files; offline cache ${version})`);

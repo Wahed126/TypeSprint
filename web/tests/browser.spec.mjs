@@ -105,7 +105,8 @@ test('Tab moves focus instead of inserting a tab', async ({ page }) => {
 test('built app works offline after its first complete visit', async ({ page, context }) => {
   await page.goto('./'); await expect(page.locator('#typing')).toBeFocused();
   await page.evaluate(async () => { await navigator.serviceWorker.ready; if (!navigator.serviceWorker.controller) await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true })); });
-  await context.setOffline(true); await page.reload(); await expect(page.locator('#typing')).toBeFocused();
+  await page.goto('./web/'); await expect(page).toHaveURL('http://127.0.0.1:4173/TypeSprint/');
+  await context.setOffline(true); await page.goto('http://127.0.0.1:4173/TypeSprint/web/'); await expect(page).toHaveURL('http://127.0.0.1:4173/TypeSprint/'); await expect(page.locator('#typing')).toBeFocused();
   await page.locator('#mode').selectOption('practice'); await page.locator('#category').selectOption('typescript'); await expect(page.locator('#target')).toContainText(' ');
 });
 
