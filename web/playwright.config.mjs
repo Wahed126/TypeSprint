@@ -17,10 +17,15 @@ export default defineConfig({
     launchOptions: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH
       ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH } : {},
   },
-  webServer: {
+  webServer: [{
     command: 'node build.mjs && python3 tests/serve.py',
     url: 'http://127.0.0.1:4173/TypeSprint/',
     reuseExistingServer: false,
     timeout: 15000,
-  },
+  }, {
+    command: 'python3 tests/serve.py --branch --port 4174',
+    url: 'http://127.0.0.1:4174/TypeSprint/',
+    reuseExistingServer: false,
+    timeout: 15000,
+  }],
 });

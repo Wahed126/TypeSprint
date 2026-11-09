@@ -2,7 +2,7 @@
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-ROOT_FILES = {'.gitignore', '.gitattributes', 'README.md', 'VERIFICATION.md', 'CONTRIBUTING.md', 'LICENSE'}
+ROOT_FILES = {'index.html', '.nojekyll', '.gitignore', '.gitattributes', 'README.md', 'VERIFICATION.md', 'CONTRIBUTING.md', 'LICENSE'}
 DIRECTORIES = {'typesprint', 'tests', 'scripts', 'packaging', 'web', '.github', 'docs'}
 SKIP = {'__pycache__', 'node_modules', 'dist', 'artifacts', 'test-results', 'playwright-report', '.git', '.agents', '.aws', '.codex'}
 

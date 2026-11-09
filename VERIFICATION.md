@@ -148,3 +148,27 @@ were not. The CI definition uses Playwright's downloaded Chromium and an Ubuntu
 26.04 container with Xvfb; this local run used installed Chrome and the available
 GNOME session. Source-based and `.deb` builds were inspected, but the new `.deb`
 was not installed over the user's existing source installation.
+
+# Playable Pages entry point — 10 November 2026
+
+The repository-root Pages deployment was displaying README documentation. Added
+`index.html` to open the game in `web/` and `.nojekyll` to publish its static
+assets unchanged. The standalone GitHub Actions artifact still opens the game
+directly at its deployment root. The README now links straight to the game.
+
+The browser build generates the tracked `web/sw.js` and artifact `dist/sw.js`
+from `sw-template.js`, using the same content hash. This gives branch-hosted and
+artifact-hosted play the same versioned offline behavior. CI checks that the
+tracked generated worker is current.
+
+Local checks for this change:
+
+- **10 Playwright browser tests passed**, including a new repository-root server
+  that reproduces branch-based Pages publishing and verifies redirect, typing,
+  completed Practice, saved History, and offline reload.
+- The package inspection test passed and now checks that source distributions
+  include the root entry point, `.nojekyll`, worker template, and generated worker.
+- The web build passed; source and artifact service workers match byte for byte.
+
+These checks use temporary browser storage and local servers. Hosted deployment
+and live-site checks are reported separately at handoff.

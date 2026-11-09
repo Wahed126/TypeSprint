@@ -5,6 +5,11 @@ Sprint (15/30/60 seconds), untimed Practice (English, German, Python, TypeScript
 and Survival (30 seconds plus one second for each correctly committed word
 position). Scoring and text content match the desktop version.
 
+## Play online
+
+**https://wahed126.github.io/TypeSprint/web/** opens the playable game.
+The repository-root Pages address redirects here when publishing from `main`.
+
 ## Build and serve
 
 Node.js 22+ and Python 3 are sufficient; no npm packages are needed at runtime or
@@ -22,8 +27,11 @@ through `file://`; modules and exercise loading need HTTP.
 
 The service worker caches the complete built app after a successful first visit
 over HTTPS or localhost. Later visits can work offline. Close old tabs and
-reopen to activate a new deployment. Cache versions are derived from built
-assets and cache names are scoped to this app's deployment path.
+reopen to activate a new deployment. Cache versions are derived from the game assets and cache names are scoped to
+this app's deployment path. The build generates both `dist/sw.js` and the tracked
+`sw.js` from `sw-template.js`, so direct branch-hosted play has the same offline
+behavior. Run the build and commit the generated `sw.js` when changing assets;
+CI verifies that it is current.
 
 ## Controls and data
 

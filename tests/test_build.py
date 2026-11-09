@@ -19,7 +19,7 @@ class BuildTests(unittest.TestCase):
             archive = next(out.glob('*-source.tar.gz'))
             with tarfile.open(archive) as tar:
                 names = [name.split('/', 1)[1] for name in tar.getnames()]
-            for path in ['typesprint/data/exercises.json', 'typesprint/app.py', 'web/index.html', 'scripts/install-desktop.py', '.github/workflows/ci.yml']:
+            for path in ['index.html', '.nojekyll', 'web/sw-template.js', 'web/sw.js', 'typesprint/data/exercises.json', 'typesprint/app.py', 'web/index.html', 'scripts/install-desktop.py', '.github/workflows/ci.yml']:
                 self.assertIn(path, names)
             for name in names:
                 self.assertFalse(set(Path(name).parts) & {'node_modules', '__pycache__', '.git', '.aws', '.codex', '.agents', 'artifacts', 'dist'})

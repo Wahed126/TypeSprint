@@ -1,5 +1,5 @@
 const PREFIX = 'typesprint-' + new URL(self.registration.scope).pathname + '-';
-const CACHE = PREFIX + '__CACHE_VERSION__';
+const CACHE = PREFIX + 'e157726ad5a85df3';
 const ASSETS = ['./', './index.html', './styles.css', './app.js', './engine.js', './storage.js', './data/exercises.json', './icon.svg', './manifest.webmanifest'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))); });
 self.addEventListener('activate', event => {

@@ -71,6 +71,8 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: npm run test:browser
       - run: npm run build
+      - name: Verify published source cache is current
+        run: git diff --exit-code -- sw.js
       - name: Upload standalone web build
         uses: actions/upload-artifact@v7
         with:

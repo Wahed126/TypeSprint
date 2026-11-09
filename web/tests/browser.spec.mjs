@@ -108,3 +108,27 @@ test('built app works offline after its first complete visit', async ({ page, co
   await context.setOffline(true); await page.reload(); await expect(page.locator('#typing')).toBeFocused();
   await page.locator('#mode').selectOption('practice'); await page.locator('#category').selectOption('typescript'); await expect(page.locator('#target')).toContainText(' ');
 });
+
+test('repository-root Pages publishing opens a playable game and works offline', async ({ page, context }) => {
+  await page.clock.install();
+  await page.goto('http://127.0.0.1:4174/TypeSprint/');
+  await expect(page).toHaveURL('http://127.0.0.1:4174/TypeSprint/web/');
+  await expect(page.locator('#typing')).toBeFocused();
+  await page.locator('#mode').selectOption('practice');
+  const text = await targetText(page);
+  await page.locator('#typing').focus();
+  await page.keyboard.insertText(text.slice(0, 5));
+  await page.clock.runFor(2000);
+  await page.keyboard.insertText(text.slice(5));
+  await expect(page.locator('#result-accuracy')).toHaveText('100.0%');
+  await expect(page.locator('#again')).toBeFocused();
+  await page.evaluate(async () => {
+    await navigator.serviceWorker.ready;
+    if (!navigator.serviceWorker.controller) await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }));
+  });
+  await context.setOffline(true);
+  await page.reload();
+  await expect(page.locator('#typing')).toBeFocused();
+  await page.getByRole('button', { name: 'History', exact: true }).click();
+  await expect(page.locator('#history-body tr')).toHaveCount(1);
+});

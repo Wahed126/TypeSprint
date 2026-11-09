@@ -7,6 +7,12 @@
 
 ![TypeSprint browser game with a ready typing round](docs/web-preview.png)
 
+## Play online
+
+**[Play TypeSprint in your browser](https://wahed126.github.io/TypeSprint/web/)** — no installation or account needed.
+
+The [main site address](https://wahed126.github.io/TypeSprint/) opens the game automatically. The README remains documentation on GitHub.
+
 ## Overview
 
 TypeSprint has two independently runnable versions in this repository:
@@ -133,13 +139,22 @@ npx playwright install --with-deps chromium
 npm run test:browser
 ```
 
-`web/dist/` is the deployable static site. It uses relative URLs and works under a
+`web/dist/` is the standalone deployable static site. It uses relative URLs and works under a
 GitHub Pages repository subpath. It includes a service worker: after the first
 complete visit over HTTPS or localhost, the app can load and play offline. The
 desktop version is offline from its first launch; the web version needs that
 initial visit. Service-worker updates become available after old tabs close.
 
 ### Host on GitHub Pages
+
+For the existing TypeSprint site, share **https://wahed126.github.io/TypeSprint/web/**.
+The repository-root `index.html` opens the game when Pages publishes from `main`
+and `/(root)`. The root `.nojekyll` keeps JavaScript and bundled exercises intact.
+This path supports play and offline caching without a separate build step on
+GitHub. Run `npm run build` in `web/` before committing changed game assets so
+its generated service worker stays current; CI checks this.
+
+Alternatively, publish only the standalone build using the custom workflow:
 
 1. Publish this repository to GitHub with `main` as its default branch.
 2. In **Settings → Pages → Build and deployment**, select **GitHub Actions** as
