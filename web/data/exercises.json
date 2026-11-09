@@ -1,0 +1,28 @@
+{
+  "words": {
+    "english": ["the", "quiet", "morning", "brings", "a", "new", "light", "over", "water", "and", "we", "find", "our", "way", "through", "open", "fields", "every", "small", "step", "can", "make", "room", "for", "something", "good", "take", "your", "time", "keep", "moving", "with", "care", "let", "words", "flow", "like", "rain", "on", "green", "leaves", "under", "clear", "skies", "build", "dream", "learn", "play", "together", "again", "simple", "ideas", "become", "bright", "stories", "when", "you", "give", "them", "space", "listen", "to", "wind", "across", "hills", "feel", "rhythm", "of", "each", "moment", "write", "one", "more", "line", "then", "begin", "another", "today", "always", "beyond", "little", "river", "home", "world", "still", "soft", "hands", "carry", "hope", "next", "summer", "night", "stars", "here", "there", "warm", "voice", "walk", "path", "fresh", "page"],
+    "german": ["der", "die", "das", "ein", "eine", "und", "wir", "gehen", "heute", "durch", "den", "grünen", "Garten", "über", "kleine", "Wege", "hören", "Vögel", "singen", "am", "frühen", "Morgen", "fließt", "Wasser", "leise", "zwischen", "Bäumen", "mit", "jedem", "Schritt", "wird", "alles", "heller", "für", "uns", "bleibt", "immer", "etwas", "Zeit", "zum", "Lernen", "Spielen", "neue", "Wörter", "erzählen", "schöne", "Geschichten", "draußen", "liegt", "große", "Straße", "heißen", "Tee", "genießen", "süße", "Äpfel", "mögen", "Kinder", "Glück", "Ruhe", "offene", "Türen", "führen", "nach", "Hause", "schreiben", "langsam", "weiter", "jeder", "Tag", "bringt", "Licht", "Freude", "weiß", "grüßt", "größer", "üben", "zusammen", "leicht", "Fenster", "Wolken", "Sonne", "Welt"]
+  },
+  "practice": {
+    "english": [
+      "The city is quiet before sunrise. A bicycle rolls past the bakery, and warm light spills onto the street. You take a breath, settle your hands, and begin again. Every small step counts.",
+      "Beyond the garden gate, a narrow path follows the river. There is no hurry here. The wind moves through the leaves, the water catches the light, and a fresh page waits for your next idea.",
+      "Good work grows from patient practice. Start with one clear thought, give it room to develop, and keep your attention on the next small step. Speed will follow a steady rhythm."
+    ],
+    "german": [
+      "Am frühen Morgen öffnen wir das Fenster. Draußen singen Vögel, und die Straße ist noch ruhig. Ein heißer Tee steht auf dem Tisch. Wir genießen die schöne Aussicht und begrüßen den neuen Tag.",
+      "Über den grünen Hügel führt ein schmaler Weg. Große Bäume spenden Schatten, während ein kleiner Bach leise fließt. Wir bleiben kurz stehen und hören zu. Manchmal liegt das Glück ganz nah.",
+      "Übung braucht Zeit und Geduld. Jeder Fehler hilft uns, etwas Neues zu lernen. Wir schreiben langsam weiter, prüfen die Wörter und freuen uns über jeden Fortschritt. Morgen fällt es schon leichter."
+    ],
+    "python": [
+      "def greet(name: str) -> str:\n    message = f\"Hello, {name}!\"\n    return message\n\nprint(greet(\"world\"))",
+      "def average(values):\n    if not values:\n        return 0\n    total = sum(values)\n    return total / len(values)",
+      "colors = [\"blue\", \"green\", \"gold\"]\n\nfor index, color in enumerate(colors):\n    print(f\"{index + 1}: {color}\")"
+    ],
+    "typescript": [
+      "function greet(name: string): string {\n    return `Hello, ${name}!`;\n}\n\nconsole.log(greet(\"world\"));",
+      "type Point = { x: number; y: number };\n\nfunction distance(p: Point): number {\n    return Math.hypot(p.x, p.y);\n}",
+      "const values: number[] = [2, 4, 6];\nconst doubled = values.map((value) => value * 2);\n\nfor (const value of doubled) {\n    console.log(value);\n}"
+    ]
+  }
+}

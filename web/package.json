@@ -1,0 +1,19 @@
+{
+  "name": "typesprint-web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline-capable TypeSprint browser game",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "test": "node --test tests/engine.test.mjs tests/storage.test.mjs",
+    "build": "node build.mjs",
+    "start": "python3 -m http.server 4173 --bind 127.0.0.1 --directory dist",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.0"
+  }
+}

@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=TypeSprint
+GenericName=Typing Game
+Comment=Find your rhythm with offline typing practice
+Exec=typesprint
+Icon=io.github.typesprint.TypeSprint
+Terminal=false
+Categories=Game;
+Keywords=typing;keyboard;practice;WPM;
+StartupNotify=true
+StartupWMClass=io.github.typesprint.TypeSprint

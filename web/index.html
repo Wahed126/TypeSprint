@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#315edb">
+  <meta name="description" content="Find your rhythm with TypeSprint: free typing sprints, English and German practice, code exercises, and Survival. No account needed.">
+  <title>TypeSprint — Find your rhythm</title>
+  <link rel="icon" href="./icon.svg" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#typing">Skip to typing</a>
+  <div class="shell">
+    <header class="header">
+      <a class="brand" href="./" aria-label="TypeSprint home"><img src="./icon.svg" width="42" height="42" alt=""><span>TypeSprint<span class="brand-sub">A little practice. A better rhythm.</span></span></a>
+      <nav aria-label="Main navigation">
+        <button class="nav active" data-page="play" aria-current="page">Play</button>
+        <button class="nav" data-page="history">History</button>
+        <button class="nav" data-page="settings">Settings</button>
+      </nav>
+    </header>
+    <p id="notice" class="notice" role="status" hidden></p>
+    <main>
+      <section id="page-play" aria-label="Play">
+        <div id="round-view">
+          <div class="intro"><p class="eyebrow">TYPE · BREATHE · REPEAT</p><h1>Find your rhythm.</h1><p class="muted">Settle your hands. The clock can wait.</p></div>
+          <div class="controls">
+            <label>Mode<select id="mode" disabled><option value="sprint">Sprint</option><option value="practice">Practice</option><option value="survival">Survival</option></select></label>
+            <label>Exercise<select id="category" disabled><option value="english">English</option><option value="german">Deutsch</option></select></label>
+            <label>Sprint length<select id="duration" disabled><option value="15">15 seconds</option><option value="30" selected>30 seconds</option><option value="60">60 seconds</option></select></label>
+          </div>
+          <div class="stats" aria-label="Round statistics">
+            <div><strong id="stat-wpm">0</strong><span>WPM</span></div><div><strong id="stat-accuracy">100%</strong><span>ACCURACY</span></div><div><strong id="stat-mistakes">0</strong><span>MISTAKES</span></div><div><strong id="stat-clock">30.0s</strong><span>TIME</span></div>
+          </div>
+          <div class="round-status"><span id="state" class="badge">Ready when you are</span><span id="progress" class="muted">Clock starts on your first character</span></div>
+          <div id="target" class="text-panel reference" role="region" aria-label="Exercise text" tabindex="0"></div>
+          <div class="input-heading"><label class="eyebrow" for="typing">YOUR TURN</label><span class="legend">Bold: correct · Wavy line: error · Double line: next</span></div>
+          <textarea id="typing" class="text-panel" rows="3" aria-describedby="instructions feedback" spellcheck="false" autocapitalize="off" autocomplete="off" autocorrect="off" autofocus disabled></textarea>
+          <div class="round-footer"><p id="instructions" class="muted">Start typing to begin. Backspace to correct.</p><button class="secondary" id="restart" disabled>Restart <kbd>Ctrl R</kbd></button></div>
+          <p id="feedback" class="feedback" aria-live="polite"></p>
+        </div>
+        <div id="results" class="results" hidden>
+          <p class="eyebrow">NICELY DONE</p><h1>Round complete.</h1><p id="result-mode" class="muted"></p><p id="personal-best" class="record" role="status"></p>
+          <div class="result-grid"><div><strong id="result-wpm"></strong><span>WORDS / MINUTE</span></div><div><strong id="result-accuracy"></strong><span>ACCURACY</span></div><div><strong id="result-mistakes"></strong><span>MISTAKES</span></div><div><strong id="result-elapsed"></strong><span>ELAPSED</span></div></div>
+          <p id="result-detail" class="muted"></p><button id="again" class="primary">Play again <span aria-hidden="true">↗</span></button><p class="hint muted">Ctrl+R for a fresh round</p>
+        </div>
+      </section>
+      <section id="page-history" aria-labelledby="history-heading" hidden>
+        <p class="eyebrow">ONE ROUND AT A TIME</p><h1 id="history-heading">Your progress.</h1><p class="muted">Every finished round, saved in this browser.</p>
+        <label class="filter">Show<select id="history-filter"><option value="">All modes</option><option value="sprint">Sprint</option><option value="practice">Practice</option><option value="survival">Survival</option></select></label>
+        <p id="history-empty" class="empty">Your first round awaits. Finish a round to see it here.</p>
+        <div class="table-scroll"><table id="history-table"><caption class="sr-only">Completed typing sessions, newest first</caption><thead><tr><th scope="col">Round</th><th scope="col">WPM</th><th scope="col">Accuracy</th><th scope="col">Mistakes</th><th scope="col">Elapsed</th></tr></thead><tbody id="history-body"></tbody></table></div>
+      </section>
+      <section id="page-settings" aria-labelledby="settings-heading" hidden>
+        <p class="eyebrow">A LITTLE MORE YOU</p><h1 id="settings-heading">Make room for focus.</h1>
+        <div class="setting-card"><div><label for="font-size">Typing text size</label><p class="muted">Exercise and input share the same size.</p></div><div class="slider"><input id="font-size" type="range" min="16" max="36" step="1" value="22"><output id="font-value" for="font-size">22 px</output></div></div>
+        <div class="setting-card"><div><h2>Appearance</h2><p class="muted">Follows your system’s light and dark preference.</p></div><span class="badge">Automatic</span></div>
+        <div class="setting-card"><div><h2>Your data stays here</h2><p class="muted">History and settings live in this browser. They do not sync with the desktop app. Clearing site data removes them.</p></div></div>
+        <details open><summary>Keyboard and scoring</summary><p>Ctrl+R restarts an unfinished round. Tab and Shift+Tab move focus. Space or Enter activates Play again. Code uses four spaces per indent and Enter for new lines.</p><p>WPM uses matching characters in the final text, divided by five and elapsed minutes. Accuracy counts all character-entry attempts, including corrected mistakes. Backspace and navigation do not count. Paste counts as text input; undo and redo are disabled.</p><p>Survival starts at 30 seconds. A correct word and its following space earn one second, once per word position. Practice finishes when you enter the passage’s character count; mistakes are allowed.</p><p>Leaving Play or switching browser tabs keeps the clock running. Restart discards unfinished rounds. Completed rounds are saved even if you restart at the deadline.</p></details>
+      </section>
+    </main>
+    <footer class="site-footer"><span>Built for the next small improvement.</span><span id="offline-status">No account. No distractions.</span></footer>
+  </div>
+  <noscript><p class="notice">TypeSprint needs JavaScript enabled to run its typing engine.</p></noscript>
+</body>
+</html>

@@ -1,0 +1,91 @@
+name: Build and test
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  desktop:
+    name: Ubuntu 26.04 desktop
+    runs-on: ubuntu-latest
+    container: ubuntu:26.04
+    timeout-minutes: 15
+    steps:
+      - name: Install Ubuntu dependencies
+        run: |
+          apt-get update
+          DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+            git ca-certificates python3 python3-gi gir1.2-gtk-4.0 gir1.2-adw-1 \
+            adwaita-icon-theme fonts-dejavu-core xvfb xauth dbus-x11 \
+            desktop-file-utils dpkg-dev
+      - uses: actions/checkout@v7
+      - name: Check bundled exercises and source
+        run: |
+          python3 scripts/sync-web-data.py --check
+          python3 -m compileall -q typesprint tests scripts
+          desktop-file-validate packaging/io.github.typesprint.TypeSprint.desktop
+      - name: Run engine, storage, package and GTK tests
+        run: >-
+          dbus-run-session -- xvfb-run -a
+          env GDK_BACKEND=x11 GSK_RENDERER=cairo GTK_A11Y=none
+          GSETTINGS_BACKEND=memory G_DEBUG=fatal-criticals
+          PYTHONWARNINGS=ignore::DeprecationWarning TYPESPRINT_GUI_TESTS=1
+          python3 -m unittest discover -v
+      - name: Build desktop distributions
+        run: python3 scripts/build-desktop.py
+      - name: Upload desktop distributions
+        uses: actions/upload-artifact@v7
+        with:
+          name: typesprint-desktop
+          path: |
+            dist/*.deb
+            dist/*-source.tar.gz
+            dist/SHA256SUMS
+          if-no-files-found: error
+          retention-days: 30
+
+  web:
+    name: Web engine, browser and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:browser
+      - run: npm run build
+      - name: Upload standalone web build
+        uses: actions/upload-artifact@v7
+        with:
+          name: typesprint-web
+          path: web/dist/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload browser diagnostics
+        if: failure()
+        uses: actions/upload-artifact@v7
+        with:
+          name: typesprint-browser-diagnostics
+          path: |
+            web/test-results/
+            web/playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7

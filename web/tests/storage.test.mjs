@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { Store, KEY } from '../storage.js';
+const memory = () => { const data = new Map(); return { getItem: key => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) }; };
+const score = (extra = {}) => ({ mode: 'sprint', category: 'english', duration: 15, elapsed: 15, wpm: 40, accuracy: 95, mistakes: 2, ...extra });
+test('completed sessions and settings survive a new store', () => { const storage = memory(), store = new Store(storage); store.save(score()); store.settings({ fontSize: 30 }); const next = new Store(storage); assert.equal(next.history().length, 1); assert.equal(next.data.settings.fontSize, 30); });
+test('personal best groups include mode, category and Sprint duration', () => { const store = new Store(memory()); assert.ok(store.save(score()).newBest); assert.equal(store.save(score()).newBest, false); for (const extra of [{ duration: 30 }, { category: 'german' }, { mode: 'survival', duration: 0 }]) assert.ok(store.save(score(extra)).newBest); assert.ok(store.save(score({ wpm: 50 })).newBest); });
+test('mode filter is newest first', () => { const store = new Store(memory()); store.save(score()); store.save(score({ mode: 'practice', category: 'python', duration: 0 })); assert.equal(store.history()[0].mode, 'practice'); assert.equal(store.history('sprint').length, 1); });
+test('storage errors keep the score in memory and report the failure', () => { const store = new Store({ getItem: () => null, setItem: () => { throw new Error('Quota'); } }); const result = store.save(score()); assert.equal(result.persisted, false); assert.equal(store.history().length, 1); assert.match(store.error, /unavailable or full/); });
+test('corrupt browser data falls back with a visible diagnostic', () => { const storage = memory(); storage.setItem(KEY, '{oops'); const store = new Store(storage); assert.equal(store.history().length, 0); assert.match(store.error, /could not be read/); });
+test('untrusted saved session shapes are discarded', () => { const storage = memory(); storage.setItem(KEY, JSON.stringify({ settings: {}, sessions: [{ mode: 'sprint', wpm: '<script>' }] })); assert.equal(new Store(storage).history().length, 0); });
