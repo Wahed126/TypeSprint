@@ -145,6 +145,28 @@ class GtkTests(unittest.TestCase):
         self.assertEqual(w.play_stack.get_visible_child_name(), "round")
         self.assertIsNone(w.round.started_at)
 
+    def test_result_feedback_changes_with_speed_and_accuracy(self):
+        w = self.window
+        w.duration.set_selected(0)
+        for length, wrong, title in ((20, 0, "A clean foundation."),
+                                      (110, 0, "Fast and flawless."),
+                                      (140, 20, "Fast hands, room for control.")):
+            with self.subTest(title=title):
+                target = w.round.target[:length]
+                typed = ''.join(('q' if char == 'x' else 'x') if i < wrong else char
+                                for i, char in enumerate(target))
+                self.type(typed)
+                self.clock.advance(15)
+                w._tick()
+                pump()
+                self.assertEqual(w.feedback_title.get_label(), title)
+                self.assertTrue(w.feedback_message.get_label())
+                self.assertEqual(w.get_focus(), w.results_heading)
+                if wrong:
+                    self.assertIn("20 mistakes in 15.0 seconds", w.feedback_message.get_label())
+                w.again.emit("clicked")
+                pump()
+
     def test_restart_preserves_completion_before_results_callback(self):
         w = self.window
         w.duration.set_selected(0)

@@ -33,6 +33,14 @@ this app's deployment path. The build generates both `dist/sw.js` and the tracke
 behavior. Run the build and commit the generated `sw.js` when changing assets;
 CI verifies that it is current.
 
+## Results feedback
+
+After each round, a coaching card uses speed, accuracy, corrected mistakes and
+elapsed time to suggest a next step. Very short samples get a warm-up message;
+code gets gentler speed thresholds and advice about indentation and punctuation.
+The desktop and web use the same catalog and examples. Messages are bundled and
+continue to work offline.
+
 ## Controls and data
 
 The input has initial focus. Type to start the timer. Backspace and selection
@@ -61,7 +69,7 @@ Playwright development dependency and automatically build/serve `dist/`.
 `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=/path/to/chrome` uses an existing browser.
 No development dependencies are copied into the static build.
 
-After changing desktop exercises, run from the repository root:
+After changing desktop exercises or the feedback catalog, run from the repository root:
 
 ```bash
 python3 scripts/sync-web-data.py

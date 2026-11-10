@@ -197,3 +197,27 @@ Tab to Play again. The full Python suite passed all 41 tests with GTK critical e
 failures. Desktop and web versions are now 1.0.1 so package installations can
 upgrade to the fix. Native hardware keys are still subject to the limitations noted
 above; the browser regressions use Chrome's native keyboard event path.
+
+# Round coaching messages — 10 November 2026
+
+Added a result card in desktop and browser versions with 14 feedback styles and
+contextual advice based on WPM, accuracy, mistakes and elapsed time. The clients
+share a bundled catalog and 32 fixture cases covering every style and tip,
+threshold boundaries, corrected mistakes, short samples, long rounds, normalized
+mistake counts, code-specific pace thresholds, and mode-specific suggestions.
+The thresholds are coaching choices rather than population skill rankings.
+
+Checks performed before publication:
+
+- **44 Python tests passed**, including shared coaching cases, GTK result-card
+  changes across different scores, and existing expiry/replay regressions.
+- **57 Node tests passed**, including the same 32 coaching examples.
+- **16 browser tests passed**, including changing messages across clean slow,
+  clean fast, corrected-error and fast inaccurate rounds, small-window card
+  layout, short Practice samples, offline loading, and deliberate replay.
+- Visually inspected the result card at 560 × 640; confirmed that the card adds no
+  extra keyboard stop between the results heading and Play again.
+- Exercise and feedback bundles match between clients. The generated service
+  worker includes both the new module and catalog for offline use.
+
+The release version is 1.1.0. Live deployment checks are reported at handoff.

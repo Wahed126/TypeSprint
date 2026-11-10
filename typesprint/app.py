@@ -8,6 +8,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, Gtk, Pango
 
 from .engine import Config
 from .exercises import Exercises
+from .feedback import round_feedback
 from .storage import Store
 
 APP_ID = "io.github.typesprint.TypeSprint"
@@ -33,6 +34,7 @@ textview { padding: 16px; border-radius: 12px; }
 .result-title:focus-visible { outline: 2px solid @accent_bg_color; outline-offset: 4px; }
 .best { color: @accent_color; font-weight: 700; }
 .primary-action { padding: 12px 30px; border-radius: 24px; font-weight: 700; }
+.feedback-card { padding: 18px 22px; border-radius: 14px; background: @card_bg_color; border: 1px solid alpha(@window_fg_color, 0.12); }
 button:focus-visible, dropdown:focus-visible, scale:focus-visible { outline: 2px solid @accent_bg_color; outline-offset: 2px; }
 """
 
@@ -262,6 +264,16 @@ class Window(Adw.ApplicationWindow):
             result_grid.attach(item, i % 2, i // 2, 1, 1)
             self.result_values[key] = value
         self.result_box.append(margins(result_grid, 20))
+        feedback_card = box(spacing=8)
+        feedback_card.add_css_class("feedback-card")
+        self.feedback_title = label("", "heading", .5)
+        self.feedback_title.set_wrap(True)
+        self.feedback_message = label("", "dim-label", .5)
+        self.feedback_message.set_wrap(True)
+        self.feedback_message.set_max_width_chars(65)
+        feedback_card.append(self.feedback_title)
+        feedback_card.append(self.feedback_message)
+        self.result_box.append(feedback_card)
         self.result_detail = label("", "dim-label", .5)
         self.result_detail.set_wrap(True)
         self.result_box.append(self.result_detail)
@@ -493,6 +505,11 @@ class Window(Adw.ApplicationWindow):
         self.result_values["accuracy"].set_label(f"{score.accuracy:.1f}%")
         self.result_values["mistakes"].set_label(str(score.mistakes))
         self.result_values["elapsed"].set_label(f"{score.elapsed:.1f}s")
+        feedback = round_feedback(score)
+        self.feedback_title.set_label(feedback.title)
+        self.feedback_message.set_label(feedback.message)
+        self.results_heading.update_property([Gtk.AccessibleProperty.DESCRIPTION],
+                                             [feedback.title + " " + feedback.message])
         duration = f" · {score.duration}s" if score.mode == "sprint" else ""
         self.result_subtitle.set_label(f"{score.mode.title()} · {CATEGORIES[score.category]}{duration}")
         self.best_label.set_label("New personal best!" if new_best else ("Saved to your history" if saved else "Result could not be saved"))

@@ -43,8 +43,9 @@
           <p id="feedback" class="feedback" aria-live="polite"></p>
         </div>
         <div id="results" class="results" hidden>
-          <p class="eyebrow">NICELY DONE</p><h1 id="results-heading" tabindex="-1">Round complete.</h1><p id="result-mode" class="muted"></p><p id="personal-best" class="record" role="status"></p>
+          <p class="eyebrow">NICELY DONE</p><h1 id="results-heading" tabindex="-1" aria-describedby="round-feedback-title round-feedback-message">Round complete.</h1><p id="result-mode" class="muted"></p><p id="personal-best" class="record" role="status"></p>
           <div class="result-grid"><div><strong id="result-wpm"></strong><span>WORDS / MINUTE</span></div><div><strong id="result-accuracy"></strong><span>ACCURACY</span></div><div><strong id="result-mistakes"></strong><span>MISTAKES</span></div><div><strong id="result-elapsed"></strong><span>ELAPSED</span></div></div>
+          <section id="round-feedback" class="round-feedback" aria-labelledby="round-feedback-title"><h2 id="round-feedback-title"></h2><p id="round-feedback-message"></p></section>
           <p id="result-detail" class="muted"></p><button id="again" class="primary">Play again <span aria-hidden="true">↗</span></button><p class="hint muted">Click Play again, or press Tab then Enter · Ctrl+R to restart</p>
         </div>
       </section>

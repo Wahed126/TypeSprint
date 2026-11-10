@@ -182,3 +182,49 @@ test('holding Space across expiry cannot activate Play again', async ({ page }) 
   await expect(page.locator('#typing')).toBeFocused();
   await expect(page.locator('#typing')).toHaveValue('');
 });
+
+test('round feedback changes with speed, accuracy and corrected mistakes', async ({ page }) => {
+  await load(page);
+  await page.locator('#duration').selectOption('15');
+  const cases = [
+    { length: 20, wrong: 0, profile: 'clean_calm', title: 'A clean foundation.' },
+    { length: 110, wrong: 0, profile: 'clean_fast', title: 'Fast and flawless.' },
+    { length: 110, wrong: 0, corrected: true, profile: 'accurate_fast', title: 'Fast and focused.' },
+    { length: 140, wrong: 20, profile: 'fast_errors', title: 'Fast hands, room for control.' },
+  ];
+  for (const sample of cases) {
+    const target = await targetText(page);
+    const typed = Array.from(target.slice(0, sample.length), (char, i) => i < sample.wrong ? (char === 'x' ? 'q' : 'x') : char).join('');
+    await page.locator('#typing').focus();
+    if (sample.corrected) { await page.keyboard.type('x'); await page.keyboard.press('Backspace'); }
+    await page.keyboard.insertText(typed);
+    await page.clock.runFor(15050);
+    await expect(page.locator('#round-feedback')).toHaveAttribute('data-profile', sample.profile);
+    await expect(page.locator('#round-feedback-title')).toHaveText(sample.title);
+    if (sample.wrong) {
+      await expect(page.locator('#round-feedback-message')).toContainText('20 mistakes in 15.0 seconds');
+    } else {
+      await expect(page.locator('#round-feedback-message')).toContainText('Try a 30-second Sprint');
+    }
+    await expect(page.locator('#results-heading')).toBeFocused();
+    await page.locator('#again').click();
+  }
+});
+
+test('very short Practice gets sample feedback rather than a speed ranking', async ({ page }) => {
+  await load(page);
+  await page.locator('#mode').selectOption('practice');
+  await page.locator('#typing').focus();
+  const target = await targetText(page);
+  await page.keyboard.insertText(target.slice(0, 5));
+  await page.clock.runFor(1000);
+  await page.keyboard.insertText(target.slice(5));
+  await expect(page.locator('#round-feedback')).toHaveAttribute('data-profile', 'quick_sample');
+  await expect(page.locator('#round-feedback-title')).toHaveText('A quick warm-up.');
+  await expect(page.locator('#round-feedback-message')).toContainText('more typing time');
+  await expect(page.locator('#result-accuracy')).toHaveText('100.0%');
+  await page.setViewportSize({ width: 560, height: 640 });
+  await page.screenshot({ path: 'test-results/round-feedback-small.png', fullPage: true });
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#again')).toBeFocused();
+});

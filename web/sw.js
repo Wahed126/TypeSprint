@@ -1,6 +1,6 @@
 const PREFIX = 'typesprint-' + new URL(self.registration.scope).pathname + '-';
-const CACHE = PREFIX + '2cbbbab392fd8d42';
-const ASSETS = ['./', './index.html', './styles.css', './app.js', './engine.js', './storage.js', './data/exercises.json', './icon.svg', './manifest.webmanifest'];
+const CACHE = PREFIX + '54c202f2e75e461c';
+const ASSETS = ['./', './index.html', './styles.css', './app.js', './engine.js', './storage.js', './feedback.js', './data/exercises.json', './data/feedback.json', './icon.svg', './manifest.webmanifest'];
 self.addEventListener('install', event => { event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS))); });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(key => key.startsWith(PREFIX) && key !== CACHE).map(key => caches.delete(key)))).then(() => self.clients.claim()));

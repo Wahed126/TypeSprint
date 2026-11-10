@@ -6,7 +6,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 PUBLIC_FILES = {'index.html', 'styles.css', 'app.js', 'engine.js', 'storage.js',
-                'data/exercises.json', 'icon.svg', 'manifest.webmanifest', 'sw.js'}
+                'feedback.js', 'data/feedback.json', 'data/exercises.json', 'icon.svg', 'manifest.webmanifest', 'sw.js'}
 
 
 class Handler(SimpleHTTPRequestHandler):

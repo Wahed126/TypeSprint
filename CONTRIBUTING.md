@@ -9,7 +9,7 @@ A rule change should update both engines and their controlled-clock tests.
 Install the Ubuntu runtime dependencies from the README. Run:
 
 ```bash
-/usr/bin/python3 -m unittest tests.test_engine tests.test_storage tests.test_build -v
+/usr/bin/python3 -m unittest tests.test_engine tests.test_storage tests.test_feedback tests.test_build -v
 TYPESPRINT_GUI_TESTS=1 /usr/bin/python3 -m unittest tests.test_gtk -v
 ```
 
@@ -46,3 +46,8 @@ behavior in pull requests. Do not claim a passing hosted workflow before it runs
 
 A project license has not yet been selected. Coordinate licensing with the owner
 before submitting work intended for public redistribution.
+
+Round coaching uses a shared JSON catalog. Keep the Python and JavaScript
+selectors consistent; both run `web/tests/fixtures/feedback.json`. Add a shared
+example when changing a threshold or advice rule, then synchronize the catalog
+and rebuild the web worker. Avoid presenting coaching thresholds as skill norms.

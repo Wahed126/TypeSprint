@@ -1,12 +1,13 @@
 import { Round } from './engine.js';
 import { Store } from './storage.js';
+import { roundFeedback } from './feedback.js';
 
 const $ = id => document.getElementById(id);
 const names = { english: 'English', german: 'Deutsch', python: 'Python', typescript: 'TypeScript' };
 let browserStorage;
 try { browserStorage = window.localStorage; } catch { browserStorage = { getItem: () => null, setItem: () => { throw new Error('Storage denied'); } }; }
 const store = new Store(browserStorage);
-let exercises, game, saved = false, composing = false, compositionBase = null, before = null, page = 'play';
+let exercises, feedbackCatalog, game, saved = false, composing = false, compositionBase = null, before = null, page = 'play';
 let referenceLength = 0, currentSpan = null;
 const typing = $('typing');
 const target = $('target');
@@ -113,12 +114,16 @@ function finish() {
   saved = true;
   const score = game.score();
   const result = store.save(score);
+  const feedback = roundFeedback(score, feedbackCatalog);
   if (!result.persisted) notice(store.error);
   $('result-mode').textContent = `${score.mode[0].toUpperCase() + score.mode.slice(1)} · ${names[score.category]}${score.mode === 'sprint' ? ` · ${score.duration}s` : ''}`;
   $('result-wpm').textContent = score.wpm.toFixed(1);
   $('result-accuracy').textContent = `${score.accuracy.toFixed(1)}%`;
   $('result-mistakes').textContent = score.mistakes;
   $('result-elapsed').textContent = `${score.elapsed.toFixed(1)}s`;
+  $('round-feedback').dataset.profile = feedback.key;
+  $('round-feedback-title').textContent = feedback.title;
+  $('round-feedback-message').textContent = feedback.message;
   $('personal-best').textContent = result.newBest ? 'New personal best!' : result.persisted ? 'Saved to your history' : 'Result kept for this visit only';
   $('result-detail').textContent = `${score.correctCharacters} matched characters · ${score.correctAttempts} correct / ${score.attempts} attempts. Corrected mistakes stay in your stats.`;
   typing.disabled = true;
@@ -210,9 +215,12 @@ document.addEventListener('visibilitychange', tick);
 window.addEventListener('pagehide', () => { if (game && game.tick() && !saved) finish(); });
 window.addEventListener('resize', () => { if (game) showCurrent(); });
 try {
-  const response = await fetch('./data/exercises.json');
+  const [response, feedbackResponse] = await Promise.all([
+    fetch('./data/exercises.json'), fetch('./data/feedback.json'),
+  ]);
   if (!response.ok) throw new Error(`Exercise load failed (${response.status})`);
-  exercises = await response.json();
+  if (!feedbackResponse.ok) throw new Error(`Feedback load failed (${feedbackResponse.status})`);
+  [exercises, feedbackCatalog] = await Promise.all([response.json(), feedbackResponse.json()]);
   $('mode').disabled = false; $('category').disabled = false; $('restart').disabled = false;
   const settings = store.data.settings;
   $('mode').value = ['sprint', 'practice', 'survival'].includes(settings.mode) ? settings.mode : 'sprint';

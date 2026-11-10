@@ -69,7 +69,7 @@ that extracted directory:
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./typesprint_1.0.1_all.deb
+sudo apt install ./typesprint_1.1.0_all.deb
 typesprint
 ```
 
@@ -220,6 +220,21 @@ UI callbacks preserve the exact deadline as the end time. In Survival, deleting
 and retyping a word cannot earn its bonus twice; identical words at different
 positions can each earn one bonus.
 
+### Round feedback
+
+Each completed round includes an encouraging message based on final WPM,
+accuracy, mistakes, and elapsed time. Examples include **Fast and flawless.**,
+**Clean and steady.**, and **One word at a time.**, followed by a practical next
+step. Short samples receive a warm-up message instead of a speed judgment;
+code practice uses gentler pace thresholds. Longer rounds and Survival runs
+receive time-aware advice. Corrected mistakes prevent a zero-mistake message,
+even if the displayed accuracy rounds to 100%.
+
+These are coaching choices, not population skill rankings. Both versions share
+the catalog in `typesprint/data/feedback.json` and run the same 32 example cases.
+After changing that catalog, run `scripts/sync-web-data.py` and rebuild the web
+version. Feedback leaves the saved scores and personal-best rules unchanged.
+
 ## Data and offline behavior
 
 **Desktop:** completed sessions and settings are written immediately to SQLite:
@@ -240,9 +255,9 @@ browsing, storage restrictions, or a full quota may prevent persistence; the app
 shows a message and keeps the result in memory for the current visit. Desktop
 SQLite history is never uploaded or read by the web version.
 
-Exercises are authored and bundled in
-`typesprint/data/exercises.json`. After editing them, synchronize the standalone
-web copy and verify consistency:
+Exercises and coaching messages are bundled in
+`typesprint/data/exercises.json` and `typesprint/data/feedback.json`. After
+editing them, synchronize the standalone web copies and verify consistency:
 
 ```bash
 /usr/bin/python3 scripts/sync-web-data.py
@@ -254,7 +269,7 @@ web copy and verify consistency:
 ### Python rules, storage, and packaging
 
 ```bash
-/usr/bin/python3 -m unittest tests.test_engine tests.test_storage -v
+/usr/bin/python3 -m unittest tests.test_engine tests.test_storage tests.test_feedback -v
 sudo apt install dpkg-dev
 /usr/bin/python3 -m unittest tests.test_build -v
 ```
@@ -333,8 +348,8 @@ Outputs:
 
 | Output | Contents |
 | --- | --- |
-| `dist/typesprint_1.0.1_all.deb` | Architecture-independent Ubuntu package; system GTK remains a runtime dependency |
-| `dist/typesprint-1.0.1-source.tar.gz` | Clean source distribution, including desktop, web, tests, and workflows |
+| `dist/typesprint_1.1.0_all.deb` | Architecture-independent Ubuntu package; system GTK remains a runtime dependency |
+| `dist/typesprint-1.1.0-source.tar.gz` | Clean source distribution, including desktop, web, tests, and workflows |
 | `dist/SHA256SUMS` | SHA-256 checksums for the desktop/source distributions |
 | `web/dist/` | Standalone static browser game with content-versioned offline caching |
 

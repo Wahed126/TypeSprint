@@ -1,0 +1,333 @@
+{
+  "base": {
+    "mode": "sprint",
+    "category": "english",
+    "duration": 30,
+    "elapsed": 30,
+    "correct_characters": 100,
+    "correct_attempts": 100,
+    "attempts": 100,
+    "mistakes": 0,
+    "wpm": 40,
+    "accuracy": 100,
+    "bonus_seconds": 0
+  },
+  "cases": [
+    {
+      "id": "no-attempts",
+      "score": {
+        "attempts": 0,
+        "correct_characters": 0,
+        "wpm": 0
+      },
+      "key": "no_matches",
+      "tip": null
+    },
+    {
+      "id": "correct-text-deleted",
+      "score": {
+        "correct_characters": 0,
+        "wpm": 0
+      },
+      "key": "no_matches",
+      "tip": null
+    },
+    {
+      "id": "zero-duration-completion",
+      "score": {
+        "elapsed": 0,
+        "wpm": 0
+      },
+      "key": "quick_sample",
+      "tip": null
+    },
+    {
+      "id": "brief-high-rate",
+      "score": {
+        "elapsed": 1,
+        "wpm": 600,
+        "attempts": 50,
+        "correct_characters": 50
+      },
+      "key": "quick_sample",
+      "tip": null
+    },
+    {
+      "id": "just-before-sample-boundary",
+      "score": {
+        "elapsed": 4.99
+      },
+      "key": "quick_sample",
+      "tip": null
+    },
+    {
+      "id": "too-few-entries",
+      "score": {
+        "attempts": 9,
+        "correct_characters": 9
+      },
+      "key": "small_sample",
+      "tip": null
+    },
+    {
+      "id": "minimum-sample-boundary",
+      "score": {
+        "elapsed": 5,
+        "attempts": 10,
+        "correct_characters": 10
+      },
+      "key": "clean_steady",
+      "tip": "sprint60"
+    },
+    {
+      "id": "fast-clean-boundary",
+      "score": {
+        "wpm": 80
+      },
+      "key": "clean_fast",
+      "tip": "sprint60"
+    },
+    {
+      "id": "steady-clean-boundary",
+      "score": {
+        "wpm": 40
+      },
+      "key": "clean_steady",
+      "tip": "sprint60"
+    },
+    {
+      "id": "calm-clean",
+      "score": {
+        "wpm": 39.99
+      },
+      "key": "clean_calm",
+      "tip": "sprint60"
+    },
+    {
+      "id": "rounded-accuracy-is-not-flawless",
+      "score": {
+        "wpm": 100,
+        "accuracy": 99.96,
+        "mistakes": 1
+      },
+      "key": "accurate_fast",
+      "tip": "sprint60"
+    },
+    {
+      "id": "fast-accurate-boundary",
+      "score": {
+        "wpm": 80,
+        "accuracy": 98,
+        "mistakes": 2
+      },
+      "key": "accurate_fast",
+      "tip": "sprint60"
+    },
+    {
+      "id": "steady-accurate",
+      "score": {
+        "wpm": 40,
+        "accuracy": 98,
+        "mistakes": 2
+      },
+      "key": "accurate_steady",
+      "tip": "sprint60"
+    },
+    {
+      "id": "calm-accurate",
+      "score": {
+        "wpm": 39,
+        "accuracy": 98,
+        "mistakes": 2
+      },
+      "key": "accurate_calm",
+      "tip": "sprint60"
+    },
+    {
+      "id": "below-high-accuracy",
+      "score": {
+        "wpm": 80,
+        "accuracy": 97.99,
+        "mistakes": 2
+      },
+      "key": "polish_fast",
+      "tip": "repeat"
+    },
+    {
+      "id": "target-accuracy-boundary",
+      "score": {
+        "wpm": 30,
+        "accuracy": 95,
+        "mistakes": 5
+      },
+      "key": "polish_calm",
+      "tip": "repeat"
+    },
+    {
+      "id": "fast-needs-accuracy",
+      "score": {
+        "wpm": 80,
+        "accuracy": 94.99,
+        "mistakes": 6
+      },
+      "key": "fast_errors",
+      "tip": "mistake_load"
+    },
+    {
+      "id": "low-accuracy-boundary",
+      "score": {
+        "accuracy": 85,
+        "mistakes": 15
+      },
+      "key": "steady_errors",
+      "tip": "mistake_load"
+    },
+    {
+      "id": "below-low-accuracy",
+      "score": {
+        "accuracy": 84.99,
+        "mistakes": 16
+      },
+      "key": "accuracy_reset",
+      "tip": "mistake_load"
+    },
+    {
+      "id": "few-mistakes-short-round",
+      "score": {
+        "accuracy": 90,
+        "mistakes": 1
+      },
+      "key": "steady_errors",
+      "tip": "repeat"
+    },
+    {
+      "id": "same-count-short-round",
+      "score": {
+        "accuracy": 90,
+        "mistakes": 3
+      },
+      "key": "steady_errors",
+      "tip": "mistake_load"
+    },
+    {
+      "id": "same-count-long-round",
+      "score": {
+        "elapsed": 120,
+        "accuracy": 90,
+        "mistakes": 3
+      },
+      "key": "steady_errors",
+      "tip": "long_practice"
+    },
+    {
+      "id": "long-focus-boundary",
+      "score": {
+        "duration": 60,
+        "elapsed": 60
+      },
+      "key": "clean_steady",
+      "tip": "long_focus"
+    },
+    {
+      "id": "long-survival",
+      "score": {
+        "mode": "survival",
+        "duration": 0,
+        "elapsed": 65,
+        "accuracy": 99,
+        "mistakes": 1
+      },
+      "key": "accurate_steady",
+      "tip": "survival_long"
+    },
+    {
+      "id": "survival-context",
+      "score": {
+        "mode": "survival",
+        "duration": 0,
+        "elapsed": 45,
+        "accuracy": 99,
+        "mistakes": 1
+      },
+      "key": "accurate_steady",
+      "tip": "survival"
+    },
+    {
+      "id": "practice-context",
+      "score": {
+        "mode": "practice",
+        "duration": 0,
+        "accuracy": 99,
+        "mistakes": 1
+      },
+      "key": "accurate_steady",
+      "tip": "practice"
+    },
+    {
+      "id": "python-fast-threshold",
+      "score": {
+        "mode": "practice",
+        "category": "python",
+        "duration": 0,
+        "wpm": 40
+      },
+      "key": "clean_fast",
+      "tip": "code"
+    },
+    {
+      "id": "typescript-steady-threshold",
+      "score": {
+        "mode": "practice",
+        "category": "typescript",
+        "duration": 0,
+        "wpm": 20
+      },
+      "key": "clean_steady",
+      "tip": "code"
+    },
+    {
+      "id": "python-calm",
+      "score": {
+        "mode": "practice",
+        "category": "python",
+        "duration": 0,
+        "wpm": 19.99
+      },
+      "key": "clean_calm",
+      "tip": "code"
+    },
+    {
+      "id": "code-accuracy-advice",
+      "score": {
+        "mode": "practice",
+        "category": "python",
+        "duration": 0,
+        "wpm": 40,
+        "accuracy": 90,
+        "mistakes": 1
+      },
+      "key": "fast_errors",
+      "tip": "code"
+    },
+    {
+      "id": "short-sprint-context",
+      "score": {
+        "duration": 15,
+        "elapsed": 15
+      },
+      "key": "clean_steady",
+      "tip": "sprint30"
+    },
+    {
+      "id": "short-sprint-polish",
+      "score": {
+        "duration": 15,
+        "elapsed": 15,
+        "accuracy": 97,
+        "mistakes": 3
+      },
+      "key": "polish_calm",
+      "tip": "repeat"
+    }
+  ]
+}

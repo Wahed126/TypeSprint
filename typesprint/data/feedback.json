@@ -1,0 +1,44 @@
+{
+  "thresholds": {
+    "minimum_elapsed": 5,
+    "minimum_attempts": 10,
+    "low_accuracy": 85,
+    "target_accuracy": 95,
+    "high_accuracy": 98,
+    "steady_wpm": 40,
+    "fast_wpm": 80,
+    "code_steady_wpm": 20,
+    "code_fast_wpm": 40,
+    "long_elapsed": 60,
+    "mistakes_per_minute": 6,
+    "minimum_mistakes": 3
+  },
+  "profiles": {
+    "no_matches": {"title": "A fresh start awaits.", "message": "Try a short passage and focus on leaving a few clean words in your final text."},
+    "quick_sample": {"title": "A quick warm-up.", "message": "A little more typing time will give you a steadier speed reading."},
+    "small_sample": {"title": "A starting point.", "message": "Try a few more words next round before judging your pace."},
+    "accuracy_reset": {"title": "One word at a time.", "message": "Take a comfortable pace and let accurate first attempts build your rhythm."},
+    "fast_errors": {"title": "Fast hands, room for control.", "message": "You found a quick pace; accuracy is the next thing to strengthen."},
+    "steady_errors": {"title": "Find your rhythm.", "message": "Give each word a little more attention before adding speed."},
+    "clean_fast": {"title": "Fast and flawless.", "message": "You combined a quick pace with zero mistakes; keep that control as you go."},
+    "clean_steady": {"title": "Clean and steady.", "message": "No mistakes this round; you have a clear rhythm to build on."},
+    "clean_calm": {"title": "A clean foundation.", "message": "You kept every entry accurate; let your pace grow gradually from here."},
+    "accurate_fast": {"title": "Fast and focused.", "message": "You kept accuracy high at a quick pace; aim for the same rhythm with fewer corrections."},
+    "accurate_steady": {"title": "A steady rhythm.", "message": "Your pace and accuracy are working together; keep making each entry count."},
+    "accurate_calm": {"title": "Accuracy is taking shape.", "message": "You are keeping your entries accurate; try a slightly quicker pace without rushing."},
+    "polish_fast": {"title": "Good pace, room to polish.", "message": "You have some speed; a little more attention to each word can make the next round cleaner."},
+    "polish_calm": {"title": "A solid practice round.", "message": "You have a useful starting point; try matching this pace with fewer mistakes."}
+  },
+  "tips": {
+    "mistake_load": "There were {mistakes} mistakes in {elapsed} seconds; focus on clean first attempts.",
+    "code": "Give indentation and punctuation the same care as letters.",
+    "survival_long": "You kept Survival going for {elapsed} seconds; aim for one more clean word next time.",
+    "long_focus": "You held that level for {elapsed} seconds; keep building on that focus.",
+    "long_practice": "That was {elapsed} seconds of practice; a steady pace matters more than rushing.",
+    "sprint30": "Try a 30-second Sprint with the same accuracy.",
+    "sprint60": "Try a 60-second Sprint with the same accuracy.",
+    "survival": "Aim to complete one more clean word next time.",
+    "practice": "Try another passage and focus on clean first attempts.",
+    "repeat": "Try another round at a comfortable, even pace."
+  }
+}
