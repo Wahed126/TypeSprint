@@ -179,3 +179,21 @@ a complete real-time 15-second Sprint, 100% accuracy for matching input,
 results focus, Enter on Play again, and History after reload all passed without
 uncaught browser errors. Pages publishing now also runs automatically when web
 files change on `main`, so updated playable builds do not require manual reruns.
+
+# Deliberate replay after expiry — 10 November 2026
+
+Reproduced an accidental restart: the results screen focused Play again, so a
+Space or Enter intended for the typing field could activate it after expiry.
+The results heading now receives focus in both GTK and the browser; Play again
+requires a click or deliberate Tab then Enter/Space. Ctrl+R stays available.
+The browser also rejects held-key repeats on the replay button.
+
+Added browser regressions for continued Space and Enter after Sprint expiry,
+continued typing after Survival expiry, and holding Space across the deadline.
+They verify stable results, unchanged score, one saved session, and deliberate
+click/keyboard restart. All 14 browser tests passed. Added a GTK regression for
+Space/Return/keypad Enter after expiry, default activation, continued text, and
+Tab to Play again. The full Python suite passed all 41 tests with GTK critical errors treated as
+failures. Desktop and web versions are now 1.0.1 so package installations can
+upgrade to the fix. Native hardware keys are still subject to the limitations noted
+above; the browser regressions use Chrome's native keyboard event path.

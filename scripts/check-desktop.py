@@ -125,7 +125,7 @@ def main():
             assert w.play_stack.get_visible_child_name() == "results"
             assert w.round.score().elapsed == 15
             assert len(w.store.history()) == 1
-            assert w.get_focus() == w.again
+            assert w.get_focus() == w.results_heading
             screenshot(w, "results-dark")
             w.again.emit("clicked")
             assert w.play_stack.get_visible_child_name() == "round"

@@ -33,7 +33,7 @@ function setPage(name, focus = true) {
     if (active) button.setAttribute('aria-current', 'page'); else button.removeAttribute('aria-current');
   }
   if (name === 'history') renderHistory();
-  if (focus && name === 'play') (game?.finished ? $('again') : typing).focus({ preventScroll: true });
+  if (focus && name === 'play') (game?.finished ? $('results-heading') : typing).focus({ preventScroll: true });
   if (name === 'play' && game) render();
 }
 function newRound(focus = true) {
@@ -123,7 +123,9 @@ function finish() {
   $('result-detail').textContent = `${score.correctCharacters} matched characters · ${score.correctAttempts} correct / ${score.attempts} attempts. Corrected mistakes stay in your stats.`;
   typing.disabled = true;
   $('round-view').hidden = true; $('results').hidden = false;
-  if (page === 'play') $('again').focus({ preventScroll: true });
+  // Continued typing (especially Space/Enter) must not activate a new round.
+  // Announce the result, then let Tab or a click deliberately reach Play again.
+  if (page === 'play') $('results-heading').focus({ preventScroll: true });
   if (page === 'history') renderHistory();
 }
 function tick() { if (game) { if (game.tick()) finish(); else if (page === 'play') stats(); } }
@@ -170,7 +172,12 @@ typing.addEventListener('compositionstart', () => { composing = true; compositio
 typing.addEventListener('compositionend', () => { composing = false; commit(compositionBase); compositionBase = null; });
 for (const name of ['click', 'keyup', 'select']) typing.addEventListener(name, () => { if (game && !composing) { showCurrent(); stats(); } });
 document.addEventListener('keydown', event => {
-  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'r' && !event.shiftKey) { event.preventDefault(); if (game) newRound(); }
+  if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'r' && !event.shiftKey) { event.preventDefault(); if (game) newRound(); return; }
+  const focused = document.activeElement;
+  if (game?.finished && [' ', 'Enter'].includes(event.key)
+      && (focused === $('results-heading') || (focused === $('again') && event.repeat))) {
+    event.preventDefault();
+  }
 });
 for (const button of document.querySelectorAll('[data-page]')) button.addEventListener('click', () => setPage(button.dataset.page));
 $('mode').addEventListener('change', () => { categories(); newRound(false); });

@@ -38,7 +38,8 @@ CI verifies that it is current.
 The input has initial focus. Type to start the timer. Backspace and selection
 replacement correct text; corrected mistakes stay in accuracy. Ctrl+R (Cmd+R on
 macOS) restarts. Tab moves focus, including in code; use four spaces for
-indentation. Enter/Space activates Play again. Browser-toolbar reload or
+indentation. At round end, results keep focus without activating a button. Click Play again
+or press Tab then Enter/Space when ready. Browser-toolbar reload or
 Ctrl+Shift+R refreshes the page.
 
 History and settings are stored in localStorage under `typesprint.v1`. They are

@@ -43,9 +43,9 @@
           <p id="feedback" class="feedback" aria-live="polite"></p>
         </div>
         <div id="results" class="results" hidden>
-          <p class="eyebrow">NICELY DONE</p><h1>Round complete.</h1><p id="result-mode" class="muted"></p><p id="personal-best" class="record" role="status"></p>
+          <p class="eyebrow">NICELY DONE</p><h1 id="results-heading" tabindex="-1">Round complete.</h1><p id="result-mode" class="muted"></p><p id="personal-best" class="record" role="status"></p>
           <div class="result-grid"><div><strong id="result-wpm"></strong><span>WORDS / MINUTE</span></div><div><strong id="result-accuracy"></strong><span>ACCURACY</span></div><div><strong id="result-mistakes"></strong><span>MISTAKES</span></div><div><strong id="result-elapsed"></strong><span>ELAPSED</span></div></div>
-          <p id="result-detail" class="muted"></p><button id="again" class="primary">Play again <span aria-hidden="true">↗</span></button><p class="hint muted">Ctrl+R for a fresh round</p>
+          <p id="result-detail" class="muted"></p><button id="again" class="primary">Play again <span aria-hidden="true">↗</span></button><p class="hint muted">Click Play again, or press Tab then Enter · Ctrl+R to restart</p>
         </div>
       </section>
       <section id="page-history" aria-labelledby="history-heading" hidden>
@@ -59,7 +59,7 @@
         <div class="setting-card"><div><label for="font-size">Typing text size</label><p class="muted">Exercise and input share the same size.</p></div><div class="slider"><input id="font-size" type="range" min="16" max="36" step="1" value="22"><output id="font-value" for="font-size">22 px</output></div></div>
         <div class="setting-card"><div><h2>Appearance</h2><p class="muted">Follows your system’s light and dark preference.</p></div><span class="badge">Automatic</span></div>
         <div class="setting-card"><div><h2>Your data stays here</h2><p class="muted">History and settings live in this browser. They do not sync with the desktop app. Clearing site data removes them.</p></div></div>
-        <details open><summary>Keyboard and scoring</summary><p>Ctrl+R restarts an unfinished round. Tab and Shift+Tab move focus. Space or Enter activates Play again. Code uses four spaces per indent and Enter for new lines.</p><p>WPM uses matching characters in the final text, divided by five and elapsed minutes. Accuracy counts all character-entry attempts, including corrected mistakes. Backspace and navigation do not count. Paste counts as text input; undo and redo are disabled.</p><p>Survival starts at 30 seconds. A correct word and its following space earn one second, once per word position. Practice finishes when you enter the passage’s character count; mistakes are allowed.</p><p>Leaving Play or switching browser tabs keeps the clock running. Restart discards unfinished rounds. Completed rounds are saved even if you restart at the deadline.</p></details>
+        <details open><summary>Keyboard and scoring</summary><p>Ctrl+R restarts an unfinished round. Tab and Shift+Tab move focus. Click Play again, or press Tab then Space or Enter. Continued typing after expiry leaves results visible. Code uses four spaces per indent and Enter for new lines.</p><p>WPM uses matching characters in the final text, divided by five and elapsed minutes. Accuracy counts all character-entry attempts, including corrected mistakes. Backspace and navigation do not count. Paste counts as text input; undo and redo are disabled.</p><p>Survival starts at 30 seconds. A correct word and its following space earn one second, once per word position. Practice finishes when you enter the passage’s character count; mistakes are allowed.</p><p>Leaving Play or switching browser tabs keeps the clock running. Restart discards unfinished rounds. Completed rounds are saved even if you restart at the deadline.</p></details>
       </section>
     </main>
     <footer class="site-footer"><span>Built for the next small improvement.</span><span id="offline-status">No account. No distractions.</span></footer>

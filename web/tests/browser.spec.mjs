@@ -32,9 +32,11 @@ test('first keystroke, error underline, correction and restart', async ({ page }
 });
 test('full timed round, Enter on Play again, persistence and mode filter', async ({ page }) => {
   await load(page); await completeSprint(page);
-  await expect(page.locator('#again')).toBeFocused();
+  await expect(page.locator('#results-heading')).toBeFocused();
   await expect(page.locator('#result-elapsed')).toHaveText('15.0s');
   await expect(page.locator('#personal-best')).toHaveText('New personal best!');
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#again')).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#typing')).toBeFocused();
   await page.reload(); await expect(page.locator('#typing')).toBeFocused();
@@ -122,7 +124,7 @@ test('repository-root Pages publishing opens a playable game and works offline',
   await page.clock.runFor(2000);
   await page.keyboard.insertText(text.slice(5));
   await expect(page.locator('#result-accuracy')).toHaveText('100.0%');
-  await expect(page.locator('#again')).toBeFocused();
+  await expect(page.locator('#results-heading')).toBeFocused();
   await page.evaluate(async () => {
     await navigator.serviceWorker.ready;
     if (!navigator.serviceWorker.controller) await new Promise(resolve => navigator.serviceWorker.addEventListener('controllerchange', resolve, { once: true }));
@@ -132,4 +134,51 @@ test('repository-root Pages publishing opens a playable game and works offline',
   await expect(page.locator('#typing')).toBeFocused();
   await page.getByRole('button', { name: 'History', exact: true }).click();
   await expect(page.locator('#history-body tr')).toHaveCount(1);
+});
+
+for (const [mode, key] of [['sprint', 'Space'], ['sprint', 'Enter'], ['survival', 'Space']]) {
+  test(`results stay visible after ${mode} expiry while typing ${key}`, async ({ page }) => {
+    await load(page);
+    await page.locator('#mode').selectOption(mode);
+    if (mode === 'sprint') await page.locator('#duration').selectOption('15');
+    await page.locator('#typing').focus();
+    await page.keyboard.type((await targetText(page))[0]);
+    await page.clock.runFor(mode === 'sprint' ? 15050 : 30050);
+    await expect(page.locator('#results')).toBeVisible();
+    const detail = await page.locator('#result-detail').textContent();
+    await page.keyboard.press(key);
+    await page.keyboard.type('still typing more words ');
+    await page.clock.runFor(1000);
+    await expect(page.locator('#results')).toBeVisible();
+    await expect(page.locator('#result-detail')).toHaveText(detail);
+    await page.locator('#again').click();
+    await expect(page.locator('#typing')).toBeFocused();
+    await expect(page.locator('#typing')).toHaveValue('');
+    await expect(page.locator('#stat-clock')).toHaveText(mode === 'sprint' ? '15.0s' : '30.0s');
+    await page.getByRole('button', { name: 'History', exact: true }).click();
+    await expect(page.locator('#history-body tr')).toHaveCount(1);
+  });
+}
+
+test('holding Space across expiry cannot activate Play again', async ({ page }) => {
+  await load(page);
+  await page.locator('#duration').selectOption('15');
+  await page.locator('#typing').focus();
+  await page.keyboard.type((await targetText(page))[0]);
+  await page.clock.runFor(14900);
+  await page.keyboard.down('Space');
+  await page.clock.runFor(200);
+  await page.keyboard.down('Space'); // Native repeat after focus changes.
+  await page.keyboard.up('Space');
+  await page.keyboard.type('more words ');
+  await expect(page.locator('#results')).toBeVisible();
+  await page.keyboard.down('Enter');
+  await page.keyboard.press('Tab');
+  await expect(page.locator('#again')).toBeFocused();
+  await page.keyboard.down('Enter'); // Held-key repeat on the deliberately focused button.
+  await page.keyboard.up('Enter');
+  await expect(page.locator('#results')).toBeVisible();
+  await page.keyboard.press('Control+r');
+  await expect(page.locator('#typing')).toBeFocused();
+  await expect(page.locator('#typing')).toHaveValue('');
 });

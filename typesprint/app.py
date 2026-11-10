@@ -30,6 +30,7 @@ textview { padding: 16px; border-radius: 12px; }
 .hint { font-size: 12px; }
 .pill { border-radius: 20px; padding: 5px 12px; background: alpha(@accent_bg_color, 0.13); color: @accent_color; font-size: 12px; font-weight: 700; }
 .result-title { font-size: 32px; font-weight: 800; }
+.result-title:focus-visible { outline: 2px solid @accent_bg_color; outline-offset: 4px; }
 .best { color: @accent_color; font-weight: 700; }
 .primary-action { padding: 12px 30px; border-radius: 24px; font-weight: 700; }
 button:focus-visible, dropdown:focus-visible, scale:focus-visible { outline: 2px solid @accent_bg_color; outline-offset: 2px; }
@@ -77,6 +78,10 @@ class Window(Adw.ApplicationWindow):
             str(Path(__file__).resolve().parent.parent / "packaging" / "icons"))
         self.set_icon_name(APP_ID)
         self._build()
+        self._results_keys = Gtk.EventControllerKey()
+        self._results_keys.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+        self._results_keys.connect("key-pressed", self._results_key_pressed)
+        self.add_controller(self._results_keys)
         self.connect("close-request", self._on_close)
         self._new_round()
         self._timer_id = GLib.timeout_add(50, self._tick)
@@ -237,7 +242,9 @@ class Window(Adw.ApplicationWindow):
         self.result_box = box(spacing=20)
         self.result_box.set_valign(Gtk.Align.CENTER)
         self.result_box.append(label("NICELY DONE", "eyebrow", .5))
-        self.result_box.append(label("Round complete.", "result-title", .5))
+        self.results_heading = label("Round complete.", "result-title", .5)
+        self.results_heading.set_selectable(True)
+        self.result_box.append(self.results_heading)
         self.result_subtitle = label("", "dim-label", .5)
         self.result_subtitle.set_wrap(True)
         self.result_box.append(self.result_subtitle)
@@ -262,7 +269,7 @@ class Window(Adw.ApplicationWindow):
         self.again.add_css_class("suggested-action")
         self.again.add_css_class("primary-action")
         self.result_box.append(self.again)
-        self.result_box.append(label("Ctrl+R for a fresh round", "hint", .5))
+        self.result_box.append(label("Click Play again, or press Tab then Enter · Ctrl+R to restart", "hint", .5))
         self.play_stack.add_named(self._wrap_page(self.result_box), "results")
         self._dark_handler = Adw.StyleManager.get_default().connect("notify::dark", self._colors)
         self._colors()
@@ -494,9 +501,15 @@ class Window(Adw.ApplicationWindow):
         self.play_stack.set_visible_child_name("results")
         self._load_history()
         if self.pages.get_visible_child_name() == "play":
-            self.set_default_widget(self.again)
-            self.again.grab_focus()
+            self.set_default_widget(None)
+            self.results_heading.grab_focus()
         return GLib.SOURCE_REMOVE
+
+    def _results_key_pressed(self, controller, keyval, keycode, state):
+        # Keys still arriving from the typing field must not start another round.
+        return bool(self.round and self.round.finished
+                    and self.get_focus() == self.results_heading
+                    and keyval in (Gdk.KEY_space, Gdk.KEY_Return, Gdk.KEY_KP_Enter))
 
     def _build_history(self):
         content = box(spacing=16)
@@ -583,11 +596,11 @@ class Window(Adw.ApplicationWindow):
 
     def _page_changed(self, *_):
         page = self.pages.get_visible_child_name()
-        self.set_default_widget(self.again if page == "play" and self.round and self.round.finished else None)
+        self.set_default_widget(None)
         if page == "history":
             self._load_history()
         elif page == "play":
-            (self.again if self.round and self.round.finished else self.input_view).grab_focus()
+            (self.results_heading if self.round and self.round.finished else self.input_view).grab_focus()
 
     def _on_close(self, *_):
         if self._result_idle:

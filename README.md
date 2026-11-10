@@ -69,7 +69,7 @@ that extracted directory:
 
 ```bash
 sha256sum -c SHA256SUMS
-sudo apt install ./typesprint_1.0.0_all.deb
+sudo apt install ./typesprint_1.0.1_all.deb
 typesprint
 ```
 
@@ -176,7 +176,7 @@ for the repository setting. Other static hosts can serve `web/dist/` directly.
 | Restart | Ctrl+R | Ctrl+R; Cmd+R also restarts on macOS |
 | Navigate | Ctrl+1 / Ctrl+2 / Ctrl+3 for Play / History / Settings | Main navigation buttons |
 | Move keyboard focus | Tab / Shift+Tab | Tab / Shift+Tab |
-| Play again | Space or Enter on the focused/default button | Space or Enter on the focused button |
+| Play again | Click the button, or Tab then Enter/Space | Click the button, or Tab then Enter/Space |
 | Code indentation | Four literal spaces | Four literal spaces |
 | Code newline | Enter | Enter |
 
@@ -190,6 +190,10 @@ typing text, visible keyboard focus, and normal Unicode text input, including
 `ä`, `ö`, `ü`, and `ß`. Errors use underlines as well as color. The browser
 respects reduced-motion preferences and exposes labeled controls and reference
 text. The desktop uses native accessible GTK text widgets.
+
+At round end, focus moves to the results heading. Continuing to type cannot
+activate Play again; click it or press Tab then Enter/Space when ready. Ctrl+R
+always remains an explicit restart shortcut.
 
 Changing the mode, category, or duration starts a fresh round. Leaving Play or
 switching browser tabs **does not pause** the clock. Restarting discards an
@@ -329,8 +333,8 @@ Outputs:
 
 | Output | Contents |
 | --- | --- |
-| `dist/typesprint_1.0.0_all.deb` | Architecture-independent Ubuntu package; system GTK remains a runtime dependency |
-| `dist/typesprint-1.0.0-source.tar.gz` | Clean source distribution, including desktop, web, tests, and workflows |
+| `dist/typesprint_1.0.1_all.deb` | Architecture-independent Ubuntu package; system GTK remains a runtime dependency |
+| `dist/typesprint-1.0.1-source.tar.gz` | Clean source distribution, including desktop, web, tests, and workflows |
 | `dist/SHA256SUMS` | SHA-256 checksums for the desktop/source distributions |
 | `web/dist/` | Standalone static browser game with content-versioned offline caching |
 

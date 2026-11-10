@@ -91,13 +91,18 @@ class GtkTests(unittest.TestCase):
         self.type("z")
         self.assertEqual(w.round.attempts, 10)
         self.assertEqual(w.play_stack.get_visible_child_name(), "results")
-        self.assertEqual(w.get_focus(), w.again)
+        self.assertEqual(w.get_focus(), w.results_heading)
         self.assertEqual(len(w.store.history()), 1)
         self.assertEqual(w.store.history()[0]["elapsed"], 15)
         w._tick()
         pump()
         self.assertEqual(len(w.store.history()), 1)
-        self.assertEqual(w.get_default_widget(), w.again)
+        self.assertIsNone(w.get_default_widget())
+        w.activate_default()
+        pump(.35)
+        self.assertEqual(w.play_stack.get_visible_child_name(), "results")
+        w.child_focus(Gtk.DirectionType.TAB_FORWARD)
+        self.assertEqual(w.get_focus(), w.again)
         w.activate_default()
         pump(.35)  # GtkButton animates keyboard activation before emitting clicked.
         self.assertEqual(w.play_stack.get_visible_child_name(), "round")
@@ -113,6 +118,32 @@ class GtkTests(unittest.TestCase):
         pump()
         self.assertEqual(self.window.pages.get_visible_child_name(), "play")
         self.assertEqual(self.window.get_focus(), self.window.input_view)
+
+    def test_typing_keys_after_expiry_cannot_restart_results(self):
+        w = self.window
+        w.duration.set_selected(0)
+        self.type(w.round.target[:5])
+        self.clock.advance(15)
+        w._tick()
+        pump()
+        finished = w.round
+        self.assertEqual(w.get_focus(), w.results_heading)
+        self.assertIsNone(w.get_default_widget())
+        for key in (Gdk.KEY_space, Gdk.KEY_Return, Gdk.KEY_KP_Enter):
+            self.assertTrue(w._results_keys.emit("key-pressed", key, 0, Gdk.ModifierType(0)))
+            w.activate_default()
+        self.type("still typing more words ")
+        pump(.35)
+        self.assertIs(w.round, finished)
+        self.assertEqual(w.play_stack.get_visible_child_name(), "results")
+        self.assertEqual(len(w.store.history()), 1)
+        w.child_focus(Gtk.DirectionType.TAB_FORWARD)
+        self.assertEqual(w.get_focus(), w.again)
+        w.activate_default()
+        pump(.35)
+        self.assertIsNot(w.round, finished)
+        self.assertEqual(w.play_stack.get_visible_child_name(), "round")
+        self.assertIsNone(w.round.started_at)
 
     def test_restart_preserves_completion_before_results_callback(self):
         w = self.window
